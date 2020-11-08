@@ -1,16 +1,17 @@
+import MovieCard from './MovieCard'
+let { movieMarkup, movieLogic } = MovieCard
 const SearchBar = {
     state: {
-        searches: {},
-        movies: {},
+         movies: {},
         movieThumb: {}
     },
     searchBarHtml: `
-        <div class="container">
+        <div class="container">            
             <div class="row justify-content-center">
                 <div class="col-10 brand-banner">Movies</div>
                 <div class="col-10 search-content">
-                    <form>
-                        <div class="form-row form-groups mt-2">
+                    <form class="col-12">
+                        <div class="form-row form-groups col-12 mt-2">
                             <div class="form-group col-md-4">
                                 <label for="inputSearchBy">Search By: </label>
                                 <select id="inputSearchBy" class="form-control">
@@ -29,16 +30,19 @@ const SearchBar = {
                     </form>
                 </div>
             </div>
+            <div id="content" class="row justify-content-center">
+                
+            </div>
         </div>`,
     searchBarLogic: () => {
         const submitButton = document.getElementById('submit-btn')
+        const content = document.getElementById('content')
         async function submitHandler (e) {
+            e.preventDefault()
+            document.getElementById('content').innerHTML = movieMarkup
             const searchBy = document.getElementById('inputSearchBy').value
             const searchParam = document.getElementById('inputSearchBox').value
             const url = `${process.env.OMDB_URL}/?apikey=${ process.env.OMDB_KEY }&type=${ searchBy }&s=${ searchParam }`
-
-            e.preventDefault()
-
             const response = await fetch(url)
             let result = await response.json()
 
@@ -60,24 +64,11 @@ const SearchBar = {
                     Type: movie.Type,
                     Poster: movie.Poster
                 }
-                if(impostor_state.searches[searchParam]){
-                    impostor_state.searches[searchParam].push(movie.imdbID)
-                }else {
-                    impostor_state.searches[searchParam] = []
-                    impostor_state.searches[searchParam].push(movie.imdbID)
-                }
-
-
-                // impostor_state.movies = {...impostor_state.movies, ...movie}
-                // impostor_state.movieThumb = { ...impostor_state.movieThumb, ...movie }
-                // impostor_state.searches = { [searchParam]: [...impostor_state.searches[searchParam], searchParam] }
-
             })
-
-            console.log(SearchBar.state)
         }
         submitButton.addEventListener('click', submitHandler)
     }
+
 
 }
 

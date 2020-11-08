@@ -868,6 +868,47 @@ try {
   Function("r", "regeneratorRuntime = r")(runtime);
 }
 
+},{}],"src/components/MovieCard.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+var MovieCard = {
+  movieMarkup: "\n    <div class=\"col-md-4\">\n        <h4 class=\"text-center\"><strong>STYLE 2</strong></h4>\n        <hr>\n            <div class=\"profile-card-6\"><img src=\"http://envato.jayasankarkr.in/code/profile/assets/img/profile-6.jpg\" class=\"img img-responsive\">\n                <div class=\"profile-name\">JOHN\n                    <br>DOE</div>\n                <div class=\"profile-position\">Lorem Ipsum Donor</div>\n                <div class=\"profile-overview\">\n                    <div class=\"profile-overview\">\n                        <div class=\"row text-center\">\n                            <div class=\"col-xs-4\">\n                                <h3>1</h3>\n                                <p>Rank</p>\n                            </div>\n                            <div class=\"col-xs-4\">\n                                <h3>50</h3>\n                                <p>Matches</p>\n                            </div>\n                            <div class=\"col-xs-4\">\n                                <h3>35</h3>\n                                <p>Goals</p>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n    </div>",
+  movieLogic: function () {
+    var _movieLogic = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+      var forms;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              forms = document.getElementsByClassName('form-groups');
+              forms.attributes('disabled', true);
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    function movieLogic() {
+      return _movieLogic.apply(this, arguments);
+    }
+
+    return movieLogic;
+  }()
+};
+var _default = MovieCard;
+exports.default = _default;
 },{}],"src/components/searchBar.js":[function(require,module,exports) {
 "use strict";
 
@@ -875,6 +916,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
+
+var _MovieCard = _interopRequireDefault(require("./MovieCard"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -886,15 +931,17 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var movieMarkup = _MovieCard.default.movieMarkup,
+    movieLogic = _MovieCard.default.movieLogic;
 var SearchBar = {
   state: {
-    searches: {},
     movies: {},
     movieThumb: {}
   },
-  searchBarHtml: "\n        <div class=\"container\">\n            <div class=\"row justify-content-center\">\n                <div class=\"col-10 brand-banner\">Movies</div>\n                <div class=\"col-10 search-content\">\n                    <form>\n                        <div class=\"form-row form-groups mt-2\">\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBy\">Search By: </label>\n                                <select id=\"inputSearchBy\" class=\"form-control\">\n                                    <option value=\"\">Choose...</option>\n                                    <option value=\"movie\">Movie</option>\n                                    <option value=\"series\">Series</option>\n                                    <option value=\"episode\">Episode</option>\n                                </select>\n                            </div>\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBox\">Search Box</label>\n                                <input type=\"text\" class=\"form-control\" id=\"inputSearchBox\">\n                            </div>\n                            <button type=\"submit\" class=\"btn-search\" id=\"submit-btn\"> Search </button>\n                        </div>\n                    </form>\n                </div>\n            </div>\n        </div>",
+  searchBarHtml: "\n        <div class=\"container\">            \n            <div class=\"row justify-content-center\">\n                <div class=\"col-10 brand-banner\">Movies</div>\n                <div class=\"col-10 search-content\">\n                    <form class=\"col-12\">\n                        <div class=\"form-row form-groups col-12 mt-2\">\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBy\">Search By: </label>\n                                <select id=\"inputSearchBy\" class=\"form-control\">\n                                    <option value=\"\">Choose...</option>\n                                    <option value=\"movie\">Movie</option>\n                                    <option value=\"series\">Series</option>\n                                    <option value=\"episode\">Episode</option>\n                                </select>\n                            </div>\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBox\">Search Box</label>\n                                <input type=\"text\" class=\"form-control\" id=\"inputSearchBox\">\n                            </div>\n                            <button type=\"submit\" class=\"btn-search\" id=\"submit-btn\"> Search </button>\n                        </div>\n                    </form>\n                </div>\n            </div>\n            <div id=\"content\" class=\"row justify-content-center\">\n                \n            </div>\n        </div>",
   searchBarLogic: function searchBarLogic() {
     var submitButton = document.getElementById('submit-btn');
+    var content = document.getElementById('content');
 
     function submitHandler(_x) {
       return _submitHandler.apply(this, arguments);
@@ -907,19 +954,20 @@ var SearchBar = {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                e.preventDefault();
+                document.getElementById('content').innerHTML = movieMarkup;
                 searchBy = document.getElementById('inputSearchBy').value;
                 searchParam = document.getElementById('inputSearchBox').value;
                 url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy, "&s=").concat(searchParam);
-                e.preventDefault();
-                _context.next = 6;
+                _context.next = 7;
                 return fetch(url);
 
-              case 6:
+              case 7:
                 response = _context.sent;
-                _context.next = 9;
+                _context.next = 10;
                 return response.json();
 
-              case 9:
+              case 10:
                 result = _context.sent;
                 result = result.Search;
                 impostor_state = _objectSpread({}, SearchBar.state);
@@ -938,18 +986,7 @@ var SearchBar = {
                     Type: movie.Type,
                     Poster: movie.Poster
                   };
-
-                  if (impostor_state.searches[searchParam]) {
-                    impostor_state.searches[searchParam].push(movie.imdbID);
-                  } else {
-                    impostor_state.searches[searchParam] = [];
-                    impostor_state.searches[searchParam].push(movie.imdbID);
-                  } // impostor_state.movies = {...impostor_state.movies, ...movie}
-                  // impostor_state.movieThumb = { ...impostor_state.movieThumb, ...movie }
-                  // impostor_state.searches = { [searchParam]: [...impostor_state.searches[searchParam], searchParam] }
-
                 });
-                console.log(SearchBar.state);
 
               case 14:
               case "end":
@@ -966,7 +1003,7 @@ var SearchBar = {
 };
 var _default = SearchBar;
 exports.default = _default;
-},{}],"index.js":[function(require,module,exports) {
+},{"./MovieCard":"src/components/MovieCard.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
@@ -976,8 +1013,11 @@ var _searchBar = _interopRequireDefault(require("./src/components/searchBar"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var searchBarHtml = _searchBar.default.searchBarHtml,
-    searchBarLogic = _searchBar.default.searchBarLogic,
-    state = _searchBar.default.state;
+    searchBarLogic = _searchBar.default.searchBarLogic;
+var state = {
+  movies: {},
+  movieThumb: {}
+};
 document.getElementById('root').innerHTML = searchBarHtml;
 searchBarLogic();
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./src/components/searchBar":"src/components/searchBar.js"}],"../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -1008,7 +1048,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41867" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44559" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
