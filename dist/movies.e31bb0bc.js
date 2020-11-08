@@ -876,11 +876,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var SearchBar = {
+  state: {
+    searches: {},
+    movies: {},
+    movieThumb: {}
+  },
   searchBarHtml: "\n        <div class=\"container\">\n            <div class=\"row justify-content-center\">\n                <div class=\"col-10 brand-banner\">Movies</div>\n                <div class=\"col-10 search-content\">\n                    <form>\n                        <div class=\"form-row form-groups mt-2\">\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBy\">Search By: </label>\n                                <select id=\"inputSearchBy\" class=\"form-control\">\n                                    <option value=\"\">Choose...</option>\n                                    <option value=\"movie\">Movie</option>\n                                    <option value=\"series\">Series</option>\n                                    <option value=\"episode\">Episode</option>\n                                </select>\n                            </div>\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBox\">Search Box</label>\n                                <input type=\"text\" class=\"form-control\" id=\"inputSearchBox\">\n                            </div>\n                            <button type=\"submit\" class=\"btn-search\" id=\"submit-btn\"> Search </button>\n                        </div>\n                    </form>\n                </div>\n            </div>\n        </div>",
   searchBarLogic: function searchBarLogic() {
     var submitButton = document.getElementById('submit-btn');
@@ -891,14 +902,14 @@ var SearchBar = {
 
     function _submitHandler() {
       _submitHandler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-        var searchBy, searchParam, url, response, result, totalPages, pagination;
+        var searchBy, searchParam, url, response, result, impostor_state;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 searchBy = document.getElementById('inputSearchBy').value;
                 searchParam = document.getElementById('inputSearchBox').value;
-                url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy, "&s=").concat(searchParam, "&p=1-10");
+                url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy, "&s=").concat(searchParam);
                 e.preventDefault();
                 _context.next = 6;
                 return fetch(url);
@@ -910,11 +921,37 @@ var SearchBar = {
 
               case 9:
                 result = _context.sent;
-                console.log(result);
-                totalPages = Math.floor(result.totalResults / 10);
-                pagination = new Array(totalPages);
+                result = result.Search;
+                impostor_state = _objectSpread({}, SearchBar.state);
+                result.forEach(function (movie) {
+                  impostor_state.movies[movie.imdbID] = {
+                    Title: movie.Title,
+                    Year: movie.Year,
+                    imdbID: movie.imdbID,
+                    Type: movie.Type,
+                    Poster: movie.Poster
+                  };
+                  impostor_state.movieThumb[movie.imdbID] = {
+                    Title: movie.Title,
+                    Year: movie.Year,
+                    imdbID: movie.imdbID,
+                    Type: movie.Type,
+                    Poster: movie.Poster
+                  };
 
-              case 13:
+                  if (impostor_state.searches[searchParam]) {
+                    impostor_state.searches[searchParam].push(movie.imdbID);
+                  } else {
+                    impostor_state.searches[searchParam] = [];
+                    impostor_state.searches[searchParam].push(movie.imdbID);
+                  } // impostor_state.movies = {...impostor_state.movies, ...movie}
+                  // impostor_state.movieThumb = { ...impostor_state.movieThumb, ...movie }
+                  // impostor_state.searches = { [searchParam]: [...impostor_state.searches[searchParam], searchParam] }
+
+                });
+                console.log(SearchBar.state);
+
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -939,7 +976,8 @@ var _searchBar = _interopRequireDefault(require("./src/components/searchBar"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var searchBarHtml = _searchBar.default.searchBarHtml,
-    searchBarLogic = _searchBar.default.searchBarLogic;
+    searchBarLogic = _searchBar.default.searchBarLogic,
+    state = _searchBar.default.state;
 document.getElementById('root').innerHTML = searchBarHtml;
 searchBarLogic();
 },{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./src/components/searchBar":"src/components/searchBar.js"}],"../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -970,7 +1008,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42971" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "41867" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
