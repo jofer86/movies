@@ -1,0 +1,28 @@
+.brand-banner {
+    margin-top: 10vh;
+    height: 20vh;
+    background: linear-gradient(45deg,#8e55f4,#7e71f6);
+    border-radius: 20px 20px 0px 0px;
+    box-shadow: 7px 10px 15px -1px rgba(209,209,209,1);
+}
+
+.search-content {
+    height: 60vh;
+    background: #f2f3f4;
+    border-radius:  0px 0px 20px 20px;
+}
+
+.btn-search {
+    background: linear-gradient(45deg,#8e55f4,#7e71f6);
+    width: 150px;
+    height: 50px;
+    color: beige;
+    box-shadow: 7px 10px 15px -1px rgba(209,209,209,1);
+    border-radius: 20px;
+}
+
+.form-groups {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
