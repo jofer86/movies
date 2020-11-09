@@ -5,14 +5,41 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.e308ff8e.css">
     <link rel="stylesheet" href="/normalize.0a915d5e.css">
     <title>Movies</title>
 <script src="/style.e308ff8e.js"></script><script src="/normalize.0a915d5e.js"></script></head>
 <body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-10 brand-banner"> <h1>Flow-Movies!</h1>  </div>
+            <div class="col-10 search-content">
+                <form class="col-12">
+                    <div class="form-row form-groups col-12 mt-2">
+                        <div class="form-group col-md-4">
+                            <label for="inputSearchBy">Search By: </label>
+                            <select id="inputSearchBy" class="form-control">
+                                <option value="">Choose...</option>
+                                <option value="movie">Movie</option>
+                                <option value="series">Series</option>
+                                <option value="episode">Episode</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputSearchBox">Search Box</label>
+                            <input type="text" class="form-control" id="inputSearchBox">
+                        </div>
+                        <button type="submit" class="btn-search" id="submit-btn"> Search </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="content" class="row justify-content-center">
 
+        </div>
+    </div>
 
-    <div id="root"></div>
     <script src="/movies.e31bb0bc.js"></script>
 </body>
 </html>

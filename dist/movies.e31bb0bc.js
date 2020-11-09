@@ -876,40 +876,78 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var MovieCard = {
-  movieMarkup: "\n    <div class=\"col-md-4\">\n        <h4 class=\"text-center\"><strong>STYLE 2</strong></h4>\n        <hr>\n            <div class=\"profile-card-6\"><img src=\"http://envato.jayasankarkr.in/code/profile/assets/img/profile-6.jpg\" class=\"img img-responsive\">\n                <div class=\"profile-name\">JOHN\n                    <br>DOE</div>\n                <div class=\"profile-position\">Lorem Ipsum Donor</div>\n                <div class=\"profile-overview\">\n                    <div class=\"profile-overview\">\n                        <div class=\"row text-center\">\n                            <div class=\"col-xs-4\">\n                                <h3>1</h3>\n                                <p>Rank</p>\n                            </div>\n                            <div class=\"col-xs-4\">\n                                <h3>50</h3>\n                                <p>Matches</p>\n                            </div>\n                            <div class=\"col-xs-4\">\n                                <h3>35</h3>\n                                <p>Goals</p>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n    </div>",
-  movieLogic: function () {
-    var _movieLogic = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var forms;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              forms = document.getElementsByClassName('form-groups');
-              forms.attributes('disabled', true);
+var movies = {};
+var content = document.getElementById('content');
 
-            case 2:
-            case "end":
-              return _context.stop();
-          }
+var buildMovieCard = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id) {
+    var url, movie, response, result, movieCard;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&i=").concat(id);
+
+            if (movies[id]) {
+              _context.next = 14;
+              break;
+            }
+
+            _context.next = 4;
+            return fetch(url);
+
+          case 4:
+            response = _context.sent;
+            _context.next = 7;
+            return response.json();
+
+          case 7:
+            result = _context.sent;
+            _context.next = 10;
+            return result;
+
+          case 10:
+            movie = _context.sent;
+            movies = _objectSpread(_objectSpread({}, movies), {}, {
+              movie: movie
+            });
+            _context.next = 15;
+            break;
+
+          case 14:
+            movie = movies[id];
+
+          case 15:
+            movieCard = "\n        <div class=\"card mb-3 mt-4 col-10\" style=\"max-width: 540px;\">\n          <div class=\"row no-gutters\">\n            <div class=\"col-md-4\">\n              <img src=\"".concat(movie.Poster, "\" class=\"card-img\" alt=\"...\">\n            </div>\n            <div class=\"col-md-8\">\n              <div class=\"card-body\">\n                <h5 class=\"card-title\">").concat(movie.Title, "</h5>\n                <p class=\"card-text\">").concat(movie.Plot, "</p>\n                <p class=\"card-text\"><small class=\"text-muted\">Release year: ").concat(movie.Year, "</small></p>    \n              </div>\n            </div>\n          </div>\n        </div>\n    ");
+            content.innerHTML = '';
+            content.innerHTML = movieCard;
+
+          case 18:
+          case "end":
+            return _context.stop();
         }
-      }, _callee);
-    }));
+      }
+    }, _callee);
+  }));
 
-    function movieLogic() {
-      return _movieLogic.apply(this, arguments);
-    }
+  return function buildMovieCard(_x) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
-    return movieLogic;
-  }()
-};
-var _default = MovieCard;
+var _default = buildMovieCard;
 exports.default = _default;
-},{}],"src/components/searchBar.js":[function(require,module,exports) {
+},{}],"src/components/MovieList.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -921,106 +959,179 @@ var _MovieCard = _interopRequireDefault(require("./MovieCard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+var movies = {};
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+var movieAggregator = function movieAggregator(movieList) {
+  var content = document.getElementById('content');
+  var backBtn = document.getElementById('back-btn');
+  var baseTable = "\n        <table class=\"table col-10 mt-4\">\n          <thead class=\"heads\">\n            <tr>\n              <th scope=\"col\">Movie</th>\n              <th scope=\"col\">Release Year</th>\n              <th scope=\"col\">Type</th>\n              <th scope=\"col\">Poster</th>\n              <th scope=\"col\"></th>\n            </tr>\n          </thead>\n          <tbody id=\"table-body\">\n          \n          </tbody>\n        </table>         \n    ";
+  content.innerHTML = baseTable;
+  var tBody = document.getElementById('table-body');
 
-var movieMarkup = _MovieCard.default.movieMarkup,
-    movieLogic = _MovieCard.default.movieLogic;
-var SearchBar = {
-  state: {
-    movies: {},
-    movieThumb: {}
-  },
-  searchBarHtml: "\n        <div class=\"container\">            \n            <div class=\"row justify-content-center\">\n                <div class=\"col-10 brand-banner\">Movies</div>\n                <div class=\"col-10 search-content\">\n                    <form class=\"col-12\">\n                        <div class=\"form-row form-groups col-12 mt-2\">\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBy\">Search By: </label>\n                                <select id=\"inputSearchBy\" class=\"form-control\">\n                                    <option value=\"\">Choose...</option>\n                                    <option value=\"movie\">Movie</option>\n                                    <option value=\"series\">Series</option>\n                                    <option value=\"episode\">Episode</option>\n                                </select>\n                            </div>\n                            <div class=\"form-group col-md-4\">\n                                <label for=\"inputSearchBox\">Search Box</label>\n                                <input type=\"text\" class=\"form-control\" id=\"inputSearchBox\">\n                            </div>\n                            <button type=\"submit\" class=\"btn-search\" id=\"submit-btn\"> Search </button>\n                        </div>\n                    </form>\n                </div>\n            </div>\n            <div id=\"content\" class=\"row justify-content-center\">\n                \n            </div>\n        </div>",
-  searchBarLogic: function searchBarLogic() {
-    var submitButton = document.getElementById('submit-btn');
-    var content = document.getElementById('content');
-
-    function submitHandler(_x) {
-      return _submitHandler.apply(this, arguments);
-    }
-
-    function _submitHandler() {
-      _submitHandler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
-        var searchBy, searchParam, url, response, result, impostor_state;
+  var rowSetter = function rowSetter(movies) {
+    movies.forEach(function (movie) {
+      movies[movie.imdbID] = _objectSpread({}, movie);
+      var tr = document.createElement('tr');
+      var rowData = "\n            <th scope=\"row\"> ".concat(movies[movie.imdbID].Title, " </th>\n            <th scope=\"col\"> ").concat(movies[movie.imdbID].Year, " </th>\n            <th scope=\"col\"> ").concat(movies[movie.imdbID].Type, " </th>\n            <th scope=\"col\"> <img src=\"").concat(movies[movie.imdbID].Poster, "\" alt=\"movie poster\" style=\"width:2em; height:3em;\"> </th>\n            <th scope=\"col\"> <button class=\"btn-search\" id=\"btn-").concat(movies[movie.imdbID].imdbID, "\" value=\"").concat(movies[movie.imdbID].imdbID, "\">Sinopsis</button> </th>        ");
+      tr.innerHTML = rowData;
+      tBody.appendChild(tr);
+      document.getElementById("btn-".concat(movies[movie.imdbID].imdbID)).addEventListener('click', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+        var movieId;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                e.preventDefault();
-                document.getElementById('content').innerHTML = movieMarkup;
-                searchBy = document.getElementById('inputSearchBy').value;
-                searchParam = document.getElementById('inputSearchBox').value;
-                url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy, "&s=").concat(searchParam);
-                _context.next = 7;
-                return fetch(url);
+                movieId = movies[movie.imdbID].imdbID;
+                _context.next = 3;
+                return (0, _MovieCard.default)(movieId);
 
-              case 7:
-                response = _context.sent;
-                _context.next = 10;
-                return response.json();
-
-              case 10:
-                result = _context.sent;
-                result = result.Search;
-                impostor_state = _objectSpread({}, SearchBar.state);
-                result.forEach(function (movie) {
-                  impostor_state.movies[movie.imdbID] = {
-                    Title: movie.Title,
-                    Year: movie.Year,
-                    imdbID: movie.imdbID,
-                    Type: movie.Type,
-                    Poster: movie.Poster
-                  };
-                  impostor_state.movieThumb[movie.imdbID] = {
-                    Title: movie.Title,
-                    Year: movie.Year,
-                    imdbID: movie.imdbID,
-                    Type: movie.Type,
-                    Poster: movie.Poster
-                  };
-                });
-
-              case 14:
+              case 3:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
-      }));
-      return _submitHandler.apply(this, arguments);
-    }
+      })));
+    });
+  };
 
-    submitButton.addEventListener('click', submitHandler);
-  }
+  rowSetter(movieList);
 };
-var _default = SearchBar;
+
+var _default = movieAggregator;
 exports.default = _default;
 },{"./MovieCard":"src/components/MovieCard.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("regenerator-runtime/runtime");
 
-var _searchBar = _interopRequireDefault(require("./src/components/searchBar"));
+var _MovieList = _interopRequireDefault(require("./src/components/MovieList"));
+
+require("./src/components/MovieCard");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var searchBarHtml = _searchBar.default.searchBarHtml,
-    searchBarLogic = _searchBar.default.searchBarLogic;
-var state = {
-  movies: {},
-  movieThumb: {}
-};
-document.getElementById('root').innerHTML = searchBarHtml;
-searchBarLogic();
-},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./src/components/searchBar":"src/components/searchBar.js"}],"../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+// Variables
+var submitButton = document.getElementById('submit-btn');
+var content = document.getElementById('content');
+var searchBy = document.getElementById('inputSearchBy');
+var searchParam = document.getElementById('inputSearchBox'); // This function handels de reuqest for a search based on the prefferences set by the user.
+
+function submitHandler(_x) {
+  return _submitHandler.apply(this, arguments);
+}
+
+function _submitHandler() {
+  _submitHandler = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(e) {
+    var movies, movieData, url, response, result, rounds, i, _url, _response, _result;
+
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            movies = [];
+            movieData = {};
+            e.preventDefault();
+            url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy.value, "&s=").concat(searchParam.value, "&p=1");
+            _context.next = 6;
+            return fetch(url);
+
+          case 6:
+            response = _context.sent;
+            _context.next = 9;
+            return response.json();
+
+          case 9:
+            result = _context.sent;
+            _context.t0 = [];
+            _context.t1 = _toConsumableArray(movies);
+            _context.t2 = _toConsumableArray;
+            _context.next = 15;
+            return result.Search;
+
+          case 15:
+            _context.t3 = _context.sent;
+            _context.t4 = (0, _context.t2)(_context.t3);
+            movies = _context.t0.concat.call(_context.t0, _context.t1, _context.t4);
+            rounds = Math.floor(result.totalResults / 10); // Since the result is paginated and  I was not able to find a way to get all the results I looped as many times as needed to get all teh results and agregate them.
+
+            i = 2;
+
+          case 20:
+            if (!(i <= rounds)) {
+              _context.next = 32;
+              break;
+            }
+
+            _url = "".concat("http://www.omdbapi.com", "/?apikey=").concat("87ee28c1", "&type=").concat(searchBy.value, "&s=").concat(searchParam.value, "&page=").concat(i);
+            _context.next = 24;
+            return fetch(_url);
+
+          case 24:
+            _response = _context.sent;
+            _context.next = 27;
+            return _response.json();
+
+          case 27:
+            _result = _context.sent;
+            movies = [].concat(_toConsumableArray(movies), _toConsumableArray(_result.Search));
+
+          case 29:
+            i++;
+            _context.next = 20;
+            break;
+
+          case 32:
+            // Sorting for release year
+            movies.sort(function (a, b) {
+              return parseInt(a.Year) - parseFloat(b.Year);
+            });
+            _context.t5 = _MovieList.default;
+            _context.next = 36;
+            return movies;
+
+          case 36:
+            _context.t6 = _context.sent;
+            (0, _context.t5)(_context.t6);
+
+          case 38:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _submitHandler.apply(this, arguments);
+}
+
+submitButton.addEventListener('click', submitHandler);
+},{"regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","./src/components/MovieList":"src/components/MovieList.js","./src/components/MovieCard":"src/components/MovieCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -1048,7 +1159,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44559" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38635" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -1224,5 +1335,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../usr/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
 //# sourceMappingURL=/movies.e31bb0bc.js.map
